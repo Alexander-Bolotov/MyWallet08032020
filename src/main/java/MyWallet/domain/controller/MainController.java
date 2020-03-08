@@ -6,7 +6,7 @@ import MyWallet.domain.repository.RoleRepository;
 import MyWallet.domain.repository.TransactionRepository;
 import MyWallet.domain.repository.UserRepository;
 import com.fasterxml.jackson.annotation.JsonView;
-import javafx.scene.chart.CategoryAxis;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -67,9 +67,8 @@ public class MainController {
         Category categoryIn = categoryDao.getFirstByCategory(catIN);
         Category categoryOut = categoryDao.getFirstByCategory(catOUT);
         Category category;
-//        if (typeOfTransaction.equals("Перевод")){
-//            category=
-//        }
+
+
         if (categoryIn!=null){
             category=categoryIn;
         }else {

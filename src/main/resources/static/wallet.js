@@ -7,8 +7,8 @@ $(document).ready(function () {
             tr.push('<tr>');
             tr.push('<td>' + date_in.toLocaleDateString('ru-RU') + '</td>');
             tr.push('<td>' + json[i].typeOfTransaction.typeOfTransaction + '</td>');
-            tr.push('<td>' + json[i].income_Wallet.wallet + '</td>');
             tr.push('<td>' + json[i].out_Wallet.wallet + '</td>');
+            tr.push('<td>' + json[i].income_Wallet.wallet + '</td>');
             tr.push('<td>' + json[i].sumOfTransaction + '</td>');
             tr.push('<td>' + json[i].user.name + '</td>');
             tr.push('<td>' + json[i].comment + '</td>');
@@ -41,10 +41,10 @@ $(document).ready(function () {
                 document.getElementById("lab2").style.display = 'none';
                 document.getElementById("outWallet").style.display = 'none';
 
-                document.getElementById("lab4").style.display = 'block';
+                document.getElementById("labIN").style.display = 'block';
                 document.getElementById("catIN").style.display = 'block';
 
-                document.getElementById("lab3").style.display = 'none';
+                document.getElementById("labOUT").style.display = 'none';
                 document.getElementById("catOUT").style.display = 'none';
 
 
@@ -55,10 +55,10 @@ $(document).ready(function () {
                 document.getElementById("incomeWallet").style.display = 'none';
                 document.getElementById("lab1").style.display = 'none';
 
-                document.getElementById("lab3").style.display = 'block';
+                document.getElementById("labOUT").style.display = 'block';
                 document.getElementById("catOUT").style.display = 'block';
 
-                document.getElementById("lab4").style.display = 'none';
+                document.getElementById("labIN").style.display = 'none';
                 document.getElementById("catIN").style.display = 'none';
 
 
@@ -69,9 +69,9 @@ $(document).ready(function () {
                 document.getElementById("lab2").style.display = 'block';
                 document.getElementById("outWallet").style.display = 'block';
 
-                document.getElementById("lab3").style.display = 'none';
+                document.getElementById("labOUT").style.display = 'none';
                 document.getElementById("catOUT").style.display = 'none';
-                document.getElementById("lab4").style.display = 'none';
+                document.getElementById("labIN").style.display = 'none';
                 document.getElementById("catIN").style.display = 'none';
 
             } else {
@@ -81,13 +81,12 @@ $(document).ready(function () {
                 document.getElementById("lab2").style.display = 'none';
                 document.getElementById("outWallet").style.display = 'none';
 
-                document.getElementById("lab3").style.display = 'none';
+                document.getElementById("labOUT").style.display = 'none';
                 document.getElementById("catOUT").style.display = 'none';
-                document.getElementById("lab4").style.display = 'none';
+                document.getElementById("labIN").style.display = 'none';
                 document.getElementById("catIN").style.display = 'none';
 
-                $("#catOUT").attr('value', 3);
-                $("#catIN").attr('value', 3);
+
             }
 
         })
@@ -109,14 +108,6 @@ $(document).ready(function () {
         $("#user").attr('readonly', "readonly");
     })
 
-    $.getJSON('/wallets', function (json) {
-        json.forEach((item) => {
-            $('#outWallet').append('<option value=" + item.id + ">' + item.wallet + '</option>');
-        $('#incomeWallet').append('<option value=" + item.id + ">' + item.wallet + '</option>');
-    });
-
-    });
-
     $.getJSON('/category?id=1', function (json) {
         json.forEach((item) => {
             $('#catIN').append('<option value="' + item.category + '">' + item.category + '</option>');
@@ -125,7 +116,7 @@ $(document).ready(function () {
 
     $.getJSON('/category?id=2', function (json) {
         json.forEach((item) => {
-            $('#catOUT').append('<option value="' + item.category + '">' + item.category + '</option>');
+            $('#catOUT').append('<option value="' + item.category.id + '">' + item.category + '</option>');
     });
     });
 
