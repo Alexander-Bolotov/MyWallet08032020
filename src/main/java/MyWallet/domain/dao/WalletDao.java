@@ -6,4 +6,7 @@ import java.util.List;
 
 public interface WalletDao {
     List<Wallet> getListWallets();
+
+    Wallet getFirstByWallet(String walletName);
+
 }

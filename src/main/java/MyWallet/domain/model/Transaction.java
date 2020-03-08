@@ -67,6 +67,17 @@ public class Transaction {
     public Transaction() {
     }
 
+    public Transaction(Date date, TypeOfTransaction typeOfTransaction, int sumOfTransaction, Wallet income_Wallet, Wallet out_Wallet, User user, String comment, Category category) {
+        this.date = date;
+        this.typeOfTransaction = typeOfTransaction;
+        this.sumOfTransaction = sumOfTransaction;
+        this.income_Wallet = income_Wallet;
+        this.out_Wallet = out_Wallet;
+        this.user = user;
+        this.comment = comment;
+        this.category = category;
+    }
+
     public Long getId() {
         return id;
     }
@@ -91,7 +102,53 @@ public class Transaction {
         this.sumOfTransaction = sumOfTransaction;
     }
 
+    public TypeOfTransaction getTypeOfTransaction() {
+        return typeOfTransaction;
+    }
 
+    public void setTypeOfTransaction(TypeOfTransaction typeOfTransaction) {
+        this.typeOfTransaction = typeOfTransaction;
+    }
+
+    public Wallet getIncome_Wallet() {
+        return income_Wallet;
+    }
+
+    public void setIncome_Wallet(Wallet income_Wallet) {
+        this.income_Wallet = income_Wallet;
+    }
+
+    public Wallet getOut_Wallet() {
+        return out_Wallet;
+    }
+
+    public void setOut_Wallet(Wallet out_Wallet) {
+        this.out_Wallet = out_Wallet;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 
     @Override
     public String toString() {

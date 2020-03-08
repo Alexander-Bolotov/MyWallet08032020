@@ -8,4 +8,7 @@ public interface TypeOTransactionDao {
 
     List<TypeOfTransaction> getAllTypes();
 
+    TypeOfTransaction getTypeOfTransactionById(Long id);
+
+    TypeOfTransaction getTypeOfTransactionByName(String name);
 }

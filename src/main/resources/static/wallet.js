@@ -41,6 +41,13 @@ $(document).ready(function () {
                 document.getElementById("lab2").style.display = 'none';
                 document.getElementById("outWallet").style.display = 'none';
 
+                document.getElementById("lab4").style.display = 'block';
+                document.getElementById("catIN").style.display = 'block';
+
+                document.getElementById("lab3").style.display = 'none';
+                document.getElementById("catOUT").style.display = 'none';
+
+
             } else if (label == 2) {
                 //если расход
                 document.getElementById("lab2").style.display = 'block';
@@ -48,14 +55,12 @@ $(document).ready(function () {
                 document.getElementById("incomeWallet").style.display = 'none';
                 document.getElementById("lab1").style.display = 'none';
 
+                document.getElementById("lab3").style.display = 'block';
+                document.getElementById("catOUT").style.display = 'block';
+
+                document.getElementById("lab4").style.display = 'none';
                 document.getElementById("catIN").style.display = 'none';
 
-                $.getJSON('/categoryOUT', function (json) {
-                    json.forEach((item) => {
-                        $('#catOUT').append('<option value="' + item.category + '">' + item.category + '</option>');
-                    });
-
-                });
 
             } else if (label == 3) {
                 //если перевод
@@ -64,12 +69,25 @@ $(document).ready(function () {
                 document.getElementById("lab2").style.display = 'block';
                 document.getElementById("outWallet").style.display = 'block';
 
+                document.getElementById("lab3").style.display = 'none';
+                document.getElementById("catOUT").style.display = 'none';
+                document.getElementById("lab4").style.display = 'none';
+                document.getElementById("catIN").style.display = 'none';
+
             } else {
                 //если пусто
                 document.getElementById("incomeWallet").style.display = 'none';
                 document.getElementById("lab1").style.display = 'none';
                 document.getElementById("lab2").style.display = 'none';
                 document.getElementById("outWallet").style.display = 'none';
+
+                document.getElementById("lab3").style.display = 'none';
+                document.getElementById("catOUT").style.display = 'none';
+                document.getElementById("lab4").style.display = 'none';
+                document.getElementById("catIN").style.display = 'none';
+
+                $("#catOUT").attr('value', 3);
+                $("#catIN").attr('value', 3);
             }
 
         })
@@ -85,10 +103,42 @@ $(document).ready(function () {
 
     });
 
+    // Установка текущего юзера в форму добавления транзакции
     $.get('user', function (name) {
         $("#user").attr('value', name);
         $("#user").attr('readonly', "readonly");
     })
 
+    $.getJSON('/wallets', function (json) {
+        json.forEach((item) => {
+            $('#outWallet').append('<option value=" + item.id + ">' + item.wallet + '</option>');
+        $('#incomeWallet').append('<option value=" + item.id + ">' + item.wallet + '</option>');
+    });
+
+    });
+
+    $.getJSON('/category?id=1', function (json) {
+        json.forEach((item) => {
+            $('#catIN').append('<option value="' + item.category + '">' + item.category + '</option>');
+        });
+    });
+
+    $.getJSON('/category?id=2', function (json) {
+        json.forEach((item) => {
+            $('#catOUT').append('<option value="' + item.category + '">' + item.category + '</option>');
+    });
+    });
+
+    $('#modal_close').click(function () {
+        $.get(
+            '/transaction',                        // адрес обработчика
+            $("#addTransaction").serialize(),          // отправляемые данные
+            function (msg) {                     // получен ответ сервера
+                console.log(msg);
+                document.location.href = msg;
+            }
+        );
+        return false;
+    });
 
 });

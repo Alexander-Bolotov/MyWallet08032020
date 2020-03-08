@@ -36,5 +36,10 @@ public class TransactionDaoImpl implements TransactionDao {
         return transactionRepository.findAll();
     }
 
+    @Override
+    public void addTransaction(Transaction transaction) {
+        transactionRepository.save(transaction);
+    }
+
 
 }

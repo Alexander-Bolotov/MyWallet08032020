@@ -18,26 +18,21 @@ public class CategoryDAOImpl implements CategoryDao {
     CategoryRepository categoryRepository;
 
     @Override
-    public List<Category> getCategoryIN() {
-        return categoryRepository.findAllById((long)1);
-    }
-
-    @Override
-    public List<Category> getCategoryOUT() {
-        return categoryRepository.findAllById((long)2);
-    }
-
-    @Override
     public List<Category> getCategoriesByType(TypeOfTransaction type) {
         List<Category> categoryList = categoryRepository.findAll();
         List<Category> categories = new ArrayList<>();
 
         for (Category category: categoryList
              ) {
-            if(category.getCategory().equals(type)){
+            if(category.getTypeOfTransaction().equals(type)){
                 categories.add(category);
             }
         }
         return categories;
+    }
+
+    @Override
+    public Category getFirstByCategory(String categoryName) {
+        return categoryRepository.getFirstByCategory(categoryName);
     }
 }

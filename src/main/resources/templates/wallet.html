@@ -63,7 +63,7 @@
                 <form id="addTransaction">
                     <div class="form-group">
                         <label for="data">Дата</label>
-                        <input type="date" class="form-control" name="data" id="data">
+                        <input type="date"  class="form-control" name="data" id="data">
                     </div>
 
                     <div class="form-group">
@@ -77,17 +77,17 @@
 
                     <div class="form-group">
                         <label id="lab2"  for="outWallet" style='display: block;'>Счет списания</label>
-                        <select class="form-control" id="outWallet" aria-required="true"></select>
+                        <select class="form-control" id="outWallet" name="outWallet" aria-required="true"></select>
                     </div>
 
                     <div class="form-group">
                         <label id="lab1"  for="incomeWallet" style='display: none;'>Счет зачисления</label>
-                        <select class="form-control" id="incomeWallet" aria-required="true" style='display: none;'></select>
+                        <select class="form-control" id="incomeWallet" name="incomeWallet" aria-required="true" style='display: none;'></select>
                     </div>
 
                     <div class="form-group">
                         <label for="summ">Сумма, руб.</label>
-                        <input type="number" class="form-control"  id="summ" name="summ">
+                        <input type="number" class="form-control"  id="summ" name="summ" required>
                     </div>
 
                     <div class="form-group">
@@ -100,16 +100,16 @@
                         <input type="text" class="form-control"  id="comment" name="comment">
                     </div>
 
-                    <label for="catOUT"></label>
+
                     <div class="form-group">
-                        <label id="lab3"  for="outWallet" style='display: block;'>Категория расхода</label>
-                        <select class="form-control" id="catOUT" aria-required="true"></select>
+                        <label id="lab3"  for="catOUT" style='display: block;'>Категория расхода</label>
+                        <select class="form-control" id="catOUT" name="catOUT" aria-required="true" style='display: block;'></select>
                     </div>
 
-                    <label for="catIN"></label>
+
                     <div class="form-group">
-                        <label id="lab4"  for="outWallet" style='display: block;'>Катгория дохода</label>
-                        <select class="form-control" id="catIN" aria-required="true"></select>
+                        <label id="lab4"  for="catIN" style='display: none;'>Категория дохода</label>
+                        <select class="form-control" id="catIN" name="catIN" aria-required="true" style='display:none';></select>
                     </div>
                 </form>
             </div>

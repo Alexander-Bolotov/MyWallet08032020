@@ -6,9 +6,8 @@ import MyWallet.domain.model.TypeOfTransaction;
 import java.util.List;
 
 public interface CategoryDao {
-    List<Category> getCategoryIN();
-
-    List<Category> getCategoryOUT();
 
     List<Category> getCategoriesByType(TypeOfTransaction type);
+
+    Category getFirstByCategory(String categoryName);
 }

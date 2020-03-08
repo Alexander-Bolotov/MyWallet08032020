@@ -4,6 +4,7 @@ package MyWallet.domain.model;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -18,8 +19,13 @@ public class Category {
     @Column(name = "category")
     private String category;
 
-    @ManyToMany(mappedBy = "categories", cascade = CascadeType.ALL)
-    private Set<TypeOfTransaction> transactions;
+    @JsonView({Transaction.class,  Category.class})
+    @ManyToOne
+    @JoinColumn(name = "typeOfTransaction_id",
+            foreignKey = @ForeignKey(name = "TypeOfTransaction_ID_FK"))
+    private TypeOfTransaction typeOfTransaction;
+
+
 
     public Category() {
     }
@@ -40,16 +46,26 @@ public class Category {
         this.category = category;
     }
 
-    public Set<TypeOfTransaction> getTransactions() {
-        return transactions;
+    public TypeOfTransaction getTypeOfTransaction() {
+        return typeOfTransaction;
     }
 
-    public void setTransactions(Set<TypeOfTransaction> transactions) {
-        this.transactions = transactions;
+    public void setTypeOfTransaction(TypeOfTransaction typeOfTransaction) {
+        this.typeOfTransaction = typeOfTransaction;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Category category1 = (Category) o;
+        return Objects.equals(id, category1.id) &&
+                Objects.equals(category, category1.category) &&
+                Objects.equals(typeOfTransaction, category1.typeOfTransaction);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, category, typeOfTransaction);
     }
 }

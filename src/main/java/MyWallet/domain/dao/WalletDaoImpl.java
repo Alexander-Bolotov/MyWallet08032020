@@ -18,4 +18,9 @@ public class WalletDaoImpl implements WalletDao {
     public List<Wallet> getListWallets() {
         return walletRepository.findAll();
     }
+
+    @Override
+    public Wallet getFirstByWallet(String walletName) {
+        return walletRepository.getFirstByWallet(walletName);
+    }
 }

@@ -12,35 +12,19 @@ import java.util.Set;
 @Table(name = "typeOfTransaction")
 public class TypeOfTransaction {
 
-    @JsonView(Transaction.class)
+    @JsonView({Transaction.class, Category.class})
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonView(Transaction.class)
+    @JsonView({Transaction.class, Category.class})
     @Column(name = "typeOfTransaction")
     private String typeOfTransaction;
-
-    @JsonView(User.class)
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE},
-            fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "TypeOfTrans_category",
-            joinColumns = @JoinColumn(name = "type_of_transaction_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private Set<Category> categories = new HashSet<Category>();
-
 
     public TypeOfTransaction() {
     }
 
-    public Set<Category> getCategories() {
-        return categories;
-    }
 
-    public void setCategories(Set<Category> categories) {
-        this.categories = categories;
-    }
 
     public Long getId() {
         return id;

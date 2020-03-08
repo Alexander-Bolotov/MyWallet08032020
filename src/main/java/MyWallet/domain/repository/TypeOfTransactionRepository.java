@@ -11,6 +11,6 @@ public interface TypeOfTransactionRepository extends JpaRepository<TypeOfTransac
     @Override
     List<TypeOfTransaction> findAll();
 
-
+    TypeOfTransaction getFirstByTypeOfTransaction(String typeOfTrans);
 
 }

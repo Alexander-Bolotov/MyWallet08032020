@@ -21,4 +21,13 @@ public class TypeOTransactionDaoImpl implements TypeOTransactionDao {
     public List<TypeOfTransaction> getAllTypes() {
         return typeOfTransactionRepository.findAll();
     }
+
+    public TypeOfTransaction getTypeOfTransactionById(Long id) {
+        return typeOfTransactionRepository.getOne(id);
+    }
+
+    @Override
+    public TypeOfTransaction getTypeOfTransactionByName(String name) {
+        return typeOfTransactionRepository.getFirstByTypeOfTransaction(name);
+    }
 }

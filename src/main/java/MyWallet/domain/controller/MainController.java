@@ -6,6 +6,7 @@ import MyWallet.domain.repository.RoleRepository;
 import MyWallet.domain.repository.TransactionRepository;
 import MyWallet.domain.repository.UserRepository;
 import com.fasterxml.jackson.annotation.JsonView;
+import javafx.scene.chart.CategoryAxis;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,10 +20,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @RequestMapping
 @RestController("/wallet")
@@ -47,8 +47,41 @@ public class MainController {
     @Autowired
     private CategoryDao categoryDao;
 
-    static final String USER_FORM = "/user-form";
-    static final String USER_DATA = "/userdata";
+
+
+    @RequestMapping(value = "/transaction")
+    public ResponseEntity<String> addTransaction(@RequestParam("data") String data, @RequestParam("typeOfTransaction") String typeOfTransaction, @RequestParam("outWallet") String outWallet, @RequestParam("incomeWallet") String incomeWallet, @RequestParam("summ") int summ, @RequestParam("user") String userName, @RequestParam("comment") String comment, @RequestParam("catOUT") String catOUT, @RequestParam("catIN") String catIN ) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat();
+        format.applyPattern("yyyy-mm-dd");
+        Date docDate= format.parse(data);// docDate - дата транзакции
+
+        TypeOfTransaction typeTrans = typeOTransactionDao.getTypeOfTransactionById(Long.parseLong(typeOfTransaction));
+
+        List<Wallet> wallets = walletDao.getListWallets();
+
+        Wallet walletOut = walletDao.getFirstByWallet(outWallet);
+        Wallet walletIn = walletDao.getFirstByWallet(incomeWallet);
+
+        User user = userRepository.findAllByName(userName);
+
+        Category categoryIn = categoryDao.getFirstByCategory(catIN);
+        Category categoryOut = categoryDao.getFirstByCategory(catOUT);
+        Category category;
+//        if (typeOfTransaction.equals("Перевод")){
+//            category=
+//        }
+        if (categoryIn!=null){
+            category=categoryIn;
+        }else {
+            category=categoryOut;
+        }
+        Transaction transaction =new Transaction(docDate,typeTrans, summ,walletIn, walletOut, user,comment, category);
+
+        transactionDao.addTransaction(transaction);
+
+        return new ResponseEntity<String>("wallet", HttpStatus.OK);
+    }
+
 
     @JsonView(Wallet.class)
     @RequestMapping(value = "/wallets", method = RequestMethod.GET)
@@ -67,33 +100,15 @@ public class MainController {
 
 
     @JsonView(Category.class)
-    @RequestMapping(value = "/category", method = RequestMethod.GET)
-    public ResponseEntity<List<Category>> getCategoriesOUT(@RequestParam("type") String type) {
-        List<TypeOfTransaction> typeOfTransactions = typeOTransactionDao.getAllTypes();
-        List<TypeOfTransaction> transactions = new ArrayList<>();
+    @RequestMapping(value = "/category", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Category>> getCategories(@RequestParam("id") Long id) {
+        TypeOfTransaction typeOfTransaction = typeOTransactionDao.getTypeOfTransactionById(id);
+        List<Category> category = categoryDao.getCategoriesByType(typeOfTransaction);
 
-        for (TypeOfTransaction typeOfTransaction: typeOfTransactions
-             ) {
-            if(typeOfTransaction.getTypeOfTransaction().equals(type)){
-                transactions.add(typeOfTransaction);
-            }
-        }
-        return new ResponseEntity<List<Category>>(categoryDao.getCategoryOUT(), HttpStatus.OK);
+        return new ResponseEntity<List<Category>>(category, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/update")
-    public String update(@RequestParam("userId") long id, Model model) {
-        if (id == -1) {
-            User user = new User();
-            model.addAttribute("user", user);
-            return USER_FORM;
-        }
-        List<Role> roles = roleRepository.findAll();
-        User user = userRepository.getOne(id);
-        model.addAttribute("user", user);
-        model.addAttribute("roles", roles);
-        return USER_FORM;
-    }
+
 
     @RequestMapping(value = "/updateUser")
     public String updateUser(@RequestParam("id") Long id, @RequestParam("name") String name, @RequestParam("password") String password, @RequestParam("roles") Set<Role> role) {
@@ -105,36 +120,7 @@ public class MainController {
         return "redirect:/mainPage";
     }
 
-    @RequestMapping(value = "/delete")
-    public String delete(@RequestParam("userId") long id, Model model) {
-        userRepository.deleteById(id);
-        return "redirect:/mainPage";
-    }
 
-    @RequestMapping(value = "/addUser")
-    public String addUser(@RequestParam("userId") long id, Model model) {
-        Set<Role> userRoles = new HashSet<>(roleRepository.findAll());
-        List<User> userList = userRepository.findAll();
-        int i = userList.size();
-        Long idLast = userList.get(i - 1).getId();
-        User user = new User();
-        user.setId(idLast + 1);
-        user.setName("");
-        user.setPassword("");
-        user.setRoles(userRoles);
-
-        model.addAttribute("user", user);
-        model.addAttribute("roles", userRoles);
-        return USER_FORM;
-    }
-
-    @RequestMapping(value = "/userdata")
-    public String userdata(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userRepository.findAllByName(auth.getName());
-        model.addAttribute("user", user);
-        return USER_DATA;
-    }
 
     @JsonView(Transaction.class)
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

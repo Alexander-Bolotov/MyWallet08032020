@@ -19,7 +19,20 @@ public class Wallet implements Serializable {
     @Column(name = "wallet", unique = true)
     private String wallet;
 
+    @JsonView({Transaction.class, Wallet.class})
+    @Column(name = "summWallet")
+    private int summWallet;
+
+
     public Wallet() {
+    }
+
+    public int getSummWallet() {
+        return summWallet;
+    }
+
+    public void setSummWallet(int summWallet) {
+        this.summWallet = summWallet;
     }
 
     public Long getId() {
